@@ -1,0 +1,57 @@
+.data 
+	primeira_mensagem:.asciiz "Digite uma sequencia de 5 numeros."
+	num:.asciiz "Numero:"
+	pos:.asciiz "positivos:\n "
+	neg:.asciiz "negativos: "
+.text
+j main
+
+funcao:
+li $s0,0 #s0(cont num) = 0
+li $s1,0 #s1(cont positivo) = 0
+li $s2,0 #s2 (cont negativo) = 0
+
+
+laco:
+# while num <=5
+bgt $s0, 5, fimlaco
+#Pede numero do usuario
+li $v0, 4
+la $a0, num
+syscall
+
+#recebe input 
+li $v0,5
+syscall
+
+#if num >=0
+bge $v0,0,positivo
+add $s2,$s2, 1
+add $s0,$s0, 1
+j laco
+positivo:
+add $s1,$s1, 1
+add $s0,$s0, 1
+j laco
+fimlaco:
+jr $ra
+
+main:
+#print("Digite uma sequencia de 5 numeros")
+li $v0, 4
+la $a0, primeira_mensagem
+syscall
+jal funcao
+
+li $v0, 4
+la $a0, pos
+syscall
+
+li $v0, 4
+la $a0, neg
+syscall
+
+li $v0,10
+syscall
+
+
